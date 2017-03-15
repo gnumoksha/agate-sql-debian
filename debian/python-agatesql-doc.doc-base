@@ -1,0 +1,9 @@
+Document: python-agatesql-doc
+Title: agate-sql documentation
+Author: Christopher Groskopf
+Abstract: This is the reference documentation for the agate-sql Python library.
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/python-agatesql-doc/html/index.html
+Files: /usr/share/doc/python-agatesql-doc/html/*.html

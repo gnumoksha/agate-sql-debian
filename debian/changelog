@@ -1,0 +1,5 @@
+python-agate-sql (0.5.1-1) UNRELEASED; urgency=low
+
+  * Initial release. (Closes: #850451)
+
+ -- Ghislain Antony Vaillant <ghisvail@gmail.com>  Sat, 11 Mar 2017 16:14:44 +0000

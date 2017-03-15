@@ -1,0 +1,10 @@
+Test-Command: set -e
+ ; cp -r tests "$AUTOPKGTEST_TMP"
+ ; for py in $(py3versions -r 2>/dev/null)
+ ; do cd "$AUTOPKGTEST_TMP"
+ ; echo "Testing with $py:"
+ ; $py -m pytest -v
+ ; done
+Depends: python3-agatesql,
+         python3-all,
+         python3-pytest

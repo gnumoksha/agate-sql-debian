@@ -1,0 +1,48 @@
+Source: python-agate-sql
+Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Uploaders: Ghislain Antony Vaillant <ghisvail@gmail.com>
+Section: python
+Priority: optional
+Build-Depends: debhelper (>= 10),
+               dh-python,
+               dpkg-dev (>= 1.17.14),
+               python-agate-doc <!nodoc>,
+               python3-agate <!nocheck> <!nodoc>,
+               python3-all,
+               python3-doc <!nodoc>,
+               python3-setuptools,
+               python3-sphinx <!nodoc>,
+               python3-sphinx-rtd-theme <!nodoc>,
+               python3-sqlalchemy <!nocheck> <!nodoc>,
+               sphinx-common
+Standards-Version: 3.9.8
+Vcs-Browser: https://anonscm.debian.org/git/python-modules/packages/python-agate-sql.git
+Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/python-agate-sql.git
+Homepage: http://agate-sql.rtfd.org/
+X-Python3-Version: >= 3.3
+
+Package: python3-agatesql
+Architecture: all
+Depends: ${misc:Depends},
+         ${python3:Depends}
+Suggests: python-agatesql-doc <!nodoc>
+Description: support for SQL read/write in agate
+ Agate-sql adds read/write support for SQL to agate. It uses a monkey patching
+ pattern to add read and write methods for SQL to all agate.Table instances
+ after import of the corresponding agatesql module.
+ .
+ This package provides the modules for Python 3.
+
+Package: python-agatesql-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends},
+         ${sphinxdoc:Depends}
+Built-Using: ${sphinxdoc:Built-Using}
+Description: documentation for agate-sql
+ Agate-sql adds read/write support for SQL to agate. It uses a monkey patching
+ pattern to add read and write methods for SQL to all agate.Table instances
+ after import of the corresponding agatesql module.
+ .
+ This package provides the documentation.
+Build-Profiles: <!nodoc>
