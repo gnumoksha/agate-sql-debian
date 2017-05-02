@@ -1,3 +1,10 @@
+python-agate-sql (0.5.2-1) experimental; urgency=medium
+
+  * New upstream version 0.5.2
+  * Refresh the patch queue
+
+ -- Ghislain Antony Vaillant <ghisvail@gmail.com>  Tue, 02 May 2017 08:46:38 +0100
+
 python-agate-sql (0.5.1-1) experimental; urgency=low
 
   * Initial release. (Closes: #850451)
