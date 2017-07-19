@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 10),
                python3-sphinx-rtd-theme <!nodoc>,
                python3-sqlalchemy <!nocheck> <!nodoc>,
                sphinx-common
-Standards-Version: 3.9.8
+Standards-Version: 4.0.0
 Vcs-Browser: https://anonscm.debian.org/git/python-modules/packages/python-agate-sql.git
 Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/python-agate-sql.git
 Homepage: http://agate-sql.rtfd.org/
