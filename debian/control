@@ -35,6 +35,7 @@ Description: support for SQL read/write in agate
 
 Package: python-agatesql-doc
 Architecture: all
+Multi-Arch: foreign
 Section: doc
 Depends: ${misc:Depends},
          ${sphinxdoc:Depends}
