@@ -1,3 +1,9 @@
+python-agate-sql (0.5.2-3) UNRELEASED; urgency=medium
+
+  * d/control: Set Vcs-* to salsa.debian.org
+
+ -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:10:35 +0100
+
 python-agate-sql (0.5.2-2) unstable; urgency=medium
 
   * Bump standards version to 4.0.0, no changes required
