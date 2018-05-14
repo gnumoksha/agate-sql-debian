@@ -19,7 +19,6 @@ Standards-Version: 4.0.0
 Vcs-Browser: https://salsa.debian.org/python-team/modules/python-agate-sql
 Vcs-Git: https://salsa.debian.org/python-team/modules/python-agate-sql.git
 Homepage: http://agate-sql.rtfd.org/
-X-Python3-Version: >= 3.3
 
 Package: python3-agatesql
 Architecture: all
