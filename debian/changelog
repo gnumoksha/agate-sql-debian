@@ -1,8 +1,12 @@
 python-agate-sql (0.5.2-3) UNRELEASED; urgency=medium
 
+  [ Ondřej Nový ]
   * d/control: Set Vcs-* to salsa.debian.org
   * d/control: Remove ancient X-Python3-Version field
   * Use debhelper-compat instead of debian/compat.
+
+  [ Debian Janitor ]
+  * Use secure URI in Homepage field.
 
  -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:10:35 +0100
 
