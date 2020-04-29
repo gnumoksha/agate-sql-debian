@@ -7,6 +7,7 @@ python-agate-sql (0.5.2-3) UNRELEASED; urgency=medium
 
   [ Debian Janitor ]
   * Use secure URI in Homepage field.
+  * Bump debhelper from old 10 to 12.
 
  -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:10:35 +0100
 
