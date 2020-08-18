@@ -4,11 +4,12 @@ Upstream-Contact: Christopher Groskopf <chrisgroskopf@gmail.com>
 Source: https://pypi.python.org/pypi/agate-sql/
 
 Files: *
-Copyright: 2017 Christopher Groskopf and contributors
+Copyright: 2017-2020, Christopher Groskopf and contributors
 License: Expat
 
 Files: debian/*
-Copyright: 2017 Ghislain Antony Vaillant <ghisvail@gmail.com>
+Copyright: 2017, Ghislain Antony Vaillant <ghisvail@gmail.com>
+ 2020, Andrius Merkys <merkys@debian.org>
 License: Expat
 
 License: Expat
