@@ -1,0 +1,11 @@
+--- a/tests/test_agatesql.py
++++ b/tests/test_agatesql.py
+@@ -149,7 +149,7 @@
+ );''')  # noqa
+ 
+     def test_to_sql_create_statement_with_dialects(self):
+-        for dialect in ['crate', 'mssql', 'mysql', 'postgresql', 'sqlite']:
++        for dialect in ['mssql', 'mysql', 'postgresql', 'sqlite']:
+             self.table.to_sql_create_statement('test_table', dialect=dialect)
+ 
+     def test_to_sql_create_statement_zero_width(self):
