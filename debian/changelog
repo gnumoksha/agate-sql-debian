@@ -1,11 +1,12 @@
-python-agate-sql (0.5.5-1) UNRELEASED; urgency=medium
+python-agate-sql (0.5.5-1) unstable; urgency=medium
 
+  [ Andrius Merkys ]
   * Team upload.
   * New upstream version 0.5.5
-
- -- Andrius Merkys <merkys@debian.org>  Tue, 18 Aug 2020 01:01:56 -0400
-
-python-agate-sql (0.5.2-3) UNRELEASED; urgency=medium
+  * Refreshing patches.
+  * Skipping tests for unpackaged 'crate' plugin for 'sqlalchemy'.
+  * Updating debian/copyright.
+  * Adding 'Rules-Requires-Root: no'.
 
   [ Ondřej Nový ]
   * d/control: Set Vcs-* to salsa.debian.org
@@ -18,7 +19,7 @@ python-agate-sql (0.5.2-3) UNRELEASED; urgency=medium
   * Set upstream metadata fields: Bug-Database, Bug-Submit, Repository,
     Repository-Browse.
 
- -- Ondřej Nový <onovy@debian.org>  Tue, 13 Feb 2018 10:10:35 +0100
+ -- Andrius Merkys <merkys@debian.org>  Tue, 18 Aug 2020 01:18:50 -0400
 
 python-agate-sql (0.5.2-2) unstable; urgency=medium
 
