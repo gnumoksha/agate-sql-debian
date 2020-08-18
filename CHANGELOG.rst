@@ -1,7 +1,38 @@
+0.5.5 - July 7, 2020
+--------------------
+
+* Set type to ``DATETIME`` for datetime (MS SQL).
+* Drop support for Python 2.7 (EOL 2020-01-01), 3.4 (2019-03-18), 3.5 (2020-09-13).
+
+0.5.4 - March 16, 2019
+----------------------
+
+* Add ``min_col_len`` and ``col_len_multiplier`` options to :meth:`.Table.to_sql` to control the length of text columns.
+* agate-sql is now tested against Python 3.7.
+* Drop support for Python 3.3 (end-of-life was September 29, 2017).
+
+Dialect-specific:
+
+* Add support for CrateDB.
+* Set type to ``BIT`` for boolean (MS SQL).
+* Eliminate SQLite warning about Decimal numbers.
+
+0.5.3 - January 28, 2018
+------------------------
+
+* Add ``chunk_size`` option to :meth:`.Table.to_sql` to write rows in batches.
+* Add ``unique_constraint`` option to :meth:`.Table.to_sql` to include in a UNIQUE constraint.
+
+Dialect-specific:
+
+* Specify precision and scale for ``DECIMAL`` (MS SQL, MySQL, Oracle).
+* Set length of ``VARCHAR`` to ``1`` even if maximum length is ``0`` (MySQL).
+* Set type to ``TEXT`` if maximum length is greater than 21,844 (MySQL).
+
 0.5.2 - April 28, 2017
 ----------------------
 
-* Add ``create_if_not_exists`` flag to :meth:`.TableSQL.to_sql`.
+* Add ``create_if_not_exists`` flag to :meth:`.Table.to_sql`.
 
 0.5.1 - February 27, 2017
 -------------------------
@@ -28,7 +59,7 @@
 0.3.0 - November 5, 2015
 ------------------------
 
-* Add ``overwrite`` flag to :meth:`.TableSQL.to_sql`.
+* Add ``overwrite`` flag to :meth:`.Table.to_sql`.
 * Removed Python 2.6 support.
 * Updated agate dependency to version 1.1.0.
 * Additional SQL types are now supported. (#4, #10)
