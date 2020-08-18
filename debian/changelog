@@ -1,3 +1,10 @@
+python-agate-sql (0.5.5-1) UNRELEASED; urgency=medium
+
+  * Team upload.
+  * New upstream version 0.5.5
+
+ -- Andrius Merkys <merkys@debian.org>  Tue, 18 Aug 2020 01:01:56 -0400
+
 python-agate-sql (0.5.2-3) UNRELEASED; urgency=medium
 
   [ Ondřej Nový ]
