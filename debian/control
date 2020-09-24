@@ -16,8 +16,8 @@ Build-Depends: debhelper-compat (= 12),
                python3-sqlalchemy <!nocheck> <!nodoc>,
                sphinx-common
 Standards-Version: 4.0.0
-Vcs-Browser: https://salsa.debian.org/python-team/modules/python-agate-sql
-Vcs-Git: https://salsa.debian.org/python-team/modules/python-agate-sql.git
+Vcs-Browser: https://salsa.debian.org/python-team/packages/python-agate-sql
+Vcs-Git: https://salsa.debian.org/python-team/packages/python-agate-sql.git
 Homepage: https://agate-sql.rtfd.org/
 Rules-Requires-Root: no
 
