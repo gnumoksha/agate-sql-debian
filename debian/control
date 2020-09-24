@@ -1,5 +1,5 @@
 Source: python-agate-sql
-Maintainer: Debian Python Modules Team <python-modules-team@lists.alioth.debian.org>
+Maintainer: Debian Python Team <team+python@tracker.debian.org>
 Uploaders: Ghislain Antony Vaillant <ghisvail@gmail.com>
 Section: python
 Priority: optional
