@@ -1,6 +1,16 @@
+From: Debian Python Team <team+python@tracker.debian.org>
+Date: Mon, 11 Jan 2021 15:02:59 +0100
+Subject: no-crate
+
+---
+ tests/test_agatesql.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/test_agatesql.py b/tests/test_agatesql.py
+index adf7311..9fcb3ba 100644
 --- a/tests/test_agatesql.py
 +++ b/tests/test_agatesql.py
-@@ -149,7 +149,7 @@
+@@ -149,7 +149,7 @@ class TestSQL(agate.AgateTestCase):
  );''')  # noqa
  
      def test_to_sql_create_statement_with_dialects(self):
