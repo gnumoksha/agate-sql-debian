@@ -1,3 +1,9 @@
+python-agate-sql (0.5.5-3) unstable; urgency=medium
+
+  * Bump minimum required python3-sqlalchemy version due to tests
+
+ -- Piotr Ożarowski <piotr@debian.org>  Fri, 15 Jan 2021 22:06:58 +0100
+
 python-agate-sql (0.5.5-2) unstable; urgency=medium
 
   [ Ondřej Nový ]
