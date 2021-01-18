@@ -7,4 +7,5 @@ Test-Command: set -e
  ; done
 Depends: python3-agatesql,
          python3-all,
-         python3-pytest
+         python3-pytest,
+         @builddeps@
