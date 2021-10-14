@@ -6,12 +6,10 @@ Subject: no-crate
  tests/test_agatesql.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/test_agatesql.py b/tests/test_agatesql.py
-index adf7311..9fcb3ba 100644
 --- a/tests/test_agatesql.py
 +++ b/tests/test_agatesql.py
-@@ -149,7 +149,7 @@ class TestSQL(agate.AgateTestCase):
- );''')  # noqa
+@@ -169,7 +169,7 @@
+         self.assertEqual(statement.replace('\t', '  '), dedent(expected))
  
      def test_to_sql_create_statement_with_dialects(self):
 -        for dialect in ['crate', 'mssql', 'mysql', 'postgresql', 'sqlite']:
