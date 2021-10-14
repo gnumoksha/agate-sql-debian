@@ -1,8 +1,14 @@
-python-agate-sql (0.5.5-5) UNRELEASED; urgency=medium
+python-agate-sql (0.5.8-1) unstable; urgency=medium
 
+  [ Andrius Merkys ]
+  * Team upload.
+  * New upstream version 0.5.8
+  * Refreshing patches.
+
+  [ Debian Janitor ]
   * Bump debhelper from old 12 to 13.
 
- -- Debian Janitor <janitor@jelmer.uk>  Thu, 26 Aug 2021 00:05:48 -0000
+ -- Andrius Merkys <merkys@debian.org>  Thu, 14 Oct 2021 03:41:58 -0400
 
 python-agate-sql (0.5.5-4) unstable; urgency=medium
 
