@@ -2,7 +2,7 @@ python-agate-sql (0.5.8-1) unstable; urgency=medium
 
   [ Andrius Merkys ]
   * Team upload.
-  * New upstream version 0.5.8
+  * New upstream version 0.5.8 (Closes: #995780)
   * Refreshing patches.
 
   [ Debian Janitor ]
