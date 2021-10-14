@@ -2,11 +2,14 @@
 # -*- coding: utf8 -*-
 
 from decimal import Decimal
+from textwrap import dedent
 
 import agate
-import agatesql  # noqa
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
+
+import agatesql
+
 
 class TestSQL(agate.AgateTestCase):
     def setUp(self):
@@ -18,7 +21,7 @@ class TestSQL(agate.AgateTestCase):
         )
 
         self.column_names = [
-            'number', 'text', 'boolean', 'date', 'datetime',
+            'number', 'textcol', 'boolean', 'date', 'datetime',
         ]
 
         self.column_types = [
@@ -105,48 +108,65 @@ class TestSQL(agate.AgateTestCase):
     def test_to_sql_create_statement(self):
         statement = self.table.to_sql_create_statement('test_table')
 
-        self.assertEqual(statement.replace('\t', '  '), '''CREATE TABLE test_table (
-  number DECIMAL, 
-  text VARCHAR NOT NULL, 
-  boolean BOOLEAN, 
-  date DATE, 
-  datetime TIMESTAMP
-);''')  # noqa
+        self.assertEqual(statement.replace('\t', '  '), dedent('''\
+            CREATE TABLE test_table (
+              number DECIMAL, 
+              textcol VARCHAR NOT NULL, 
+              boolean BOOLEAN, 
+              date DATE, 
+              datetime TIMESTAMP
+            );'''))  # noqa: W291
 
     def test_to_sql_create_statement_no_constraints(self):
         statement = self.table.to_sql_create_statement('test_table', constraints=False)
 
-        self.assertEqual(statement.replace('\t', '  '), '''CREATE TABLE test_table (
-  number DECIMAL, 
-  text VARCHAR, 
-  boolean BOOLEAN, 
-  date DATE, 
-  datetime TIMESTAMP
-);''')  # noqa
+        self.assertEqual(statement.replace('\t', '  '), dedent('''\
+            CREATE TABLE test_table (
+              number DECIMAL, 
+              textcol VARCHAR, 
+              boolean BOOLEAN, 
+              date DATE, 
+              datetime TIMESTAMP
+            );'''))  # noqa: W291
 
     def test_to_sql_create_statement_unique_constraint(self):
-        statement = self.table.to_sql_create_statement('test_table', unique_constraint=['number', 'text'])
+        statement = self.table.to_sql_create_statement('test_table', unique_constraint=['number', 'textcol'])
 
-        self.assertEqual(statement.replace('\t', '  '), '''CREATE TABLE test_table (
-  number DECIMAL, 
-  text VARCHAR NOT NULL, 
-  boolean BOOLEAN, 
-  date DATE, 
-  datetime TIMESTAMP, 
-  UNIQUE (number, text)
-);''')  # noqa
+        self.assertEqual(statement.replace('\t', '  '), dedent('''\
+            CREATE TABLE test_table (
+              number DECIMAL, 
+              textcol VARCHAR NOT NULL, 
+              boolean BOOLEAN, 
+              date DATE, 
+              datetime TIMESTAMP, 
+              UNIQUE (number, textcol)
+            );'''))  # noqa: W291
 
     def test_to_sql_create_statement_with_schema(self):
         statement = self.table.to_sql_create_statement('test_table', db_schema='test_schema', dialect='mysql')
 
-        self.assertEqual(statement.replace('\t', '  '), '''CREATE TABLE test_schema.test_table (
-  number DECIMAL(38, 3), 
-  text VARCHAR(1) NOT NULL, 
-  boolean BOOL, 
-  date DATE, 
-  datetime TIMESTAMP NULL, 
-  CHECK (boolean IN (0, 1))
-);''')  # noqa
+        # https://github.com/wireservice/agate-sql/issues/33#issuecomment-879267838
+        if 'CHECK' in statement:
+            expected = '''\
+                CREATE TABLE test_schema.test_table (
+                  number DECIMAL(38, 3), 
+                  textcol VARCHAR(1) NOT NULL, 
+                  boolean BOOL, 
+                  date DATE, 
+                  datetime TIMESTAMP NULL, 
+                  CHECK (boolean IN (0, 1))
+                );'''  # noqa: W291
+        else:
+            expected = '''\
+                CREATE TABLE test_schema.test_table (
+                  number DECIMAL(38, 3), 
+                  textcol VARCHAR(1) NOT NULL, 
+                  boolean BOOL, 
+                  date DATE, 
+                  datetime TIMESTAMP NULL
+                );'''  # noqa: W291
+
+        self.assertEqual(statement.replace('\t', '  '), dedent(expected))
 
     def test_to_sql_create_statement_with_dialects(self):
         for dialect in ['crate', 'mssql', 'mysql', 'postgresql', 'sqlite']:
@@ -160,10 +180,11 @@ class TestSQL(agate.AgateTestCase):
 
         statement = table.to_sql_create_statement('test_table', db_schema='test_schema', dialect='mysql')
 
-        self.assertEqual(statement.replace('\t', '  '), '''CREATE TABLE test_schema.test_table (
-  id DECIMAL(38, 0) NOT NULL, 
-  name VARCHAR(1)
-);''')  # noqa
+        self.assertEqual(statement.replace('\t', '  '), dedent('''\
+            CREATE TABLE test_schema.test_table (
+              id DECIMAL(38, 0) NOT NULL, 
+              name VARCHAR(1)
+            );'''))  # noqa: W291
 
     def test_to_sql_create_statement_wide_width(self):
         rows = ((1, 'x' * 21845), (2, ''))
@@ -173,10 +194,11 @@ class TestSQL(agate.AgateTestCase):
 
         statement = table.to_sql_create_statement('test_table', db_schema='test_schema', dialect='mysql')
 
-        self.assertEqual(statement.replace('\t', '  '), '''CREATE TABLE test_schema.test_table (
-  id DECIMAL(38, 0) NOT NULL, 
-  name TEXT
-);''')  # noqa
+        self.assertEqual(statement.replace('\t', '  '), dedent('''\
+            CREATE TABLE test_schema.test_table (
+              id DECIMAL(38, 0) NOT NULL, 
+              name TEXT
+            );'''))  # noqa: W291
 
     def test_make_sql_table_col_len_multiplier(self):
         rows = ((1, 'x' * 10), (2, ''))
@@ -187,8 +209,7 @@ class TestSQL(agate.AgateTestCase):
         sql_table = agatesql.table.make_sql_table(table, 'test_table', dialect='mysql', db_schema='test_schema',
                                                   constraints=True, col_len_multiplier=1.5)
 
-
-        self.assertEquals(sql_table.columns.get('name').type.length, 15)
+        self.assertEqual(sql_table.columns.get('name').type.length, 15)
 
     def test_make_sql_table_min_col_len(self):
         rows = ((1, 'x' * 10), (2, ''))
@@ -196,11 +217,10 @@ class TestSQL(agate.AgateTestCase):
         column_types = [agate.Number(), agate.Text()]
         table = agate.Table(rows, column_names, column_types)
 
-        sql_table = agatesql.table.make_sql_table(table, 'test_table', dialect='mysql', db_schema='test_schema', 
+        sql_table = agatesql.table.make_sql_table(table, 'test_table', dialect='mysql', db_schema='test_schema',
                                                   constraints=True, min_col_len=20)
 
-
-        self.assertEquals(sql_table.columns.get('name').type.length, 20)
+        self.assertEqual(sql_table.columns.get('name').type.length, 20)
 
     def test_sql_query_simple(self):
         results = self.table.sql_query('select * from agate')

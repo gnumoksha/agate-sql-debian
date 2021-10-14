@@ -1,3 +1,18 @@
+0.5.8 - September 15, 2021
+--------------------------
+
+* Fix tests for Linux packages.
+
+0.5.7 - July 13, 2021
+---------------------
+
+* Add wheels distribution.
+
+0.5.6 - March 4, 2021
+---------------------
+
+* Fix test that fails in specific environments.
+
 0.5.5 - July 7, 2020
 --------------------
 
