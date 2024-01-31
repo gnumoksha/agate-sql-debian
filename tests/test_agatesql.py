@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
-
 from decimal import Decimal
 from textwrap import dedent
 
@@ -15,8 +12,8 @@ class TestSQL(agate.AgateTestCase):
     def setUp(self):
         self.rows = (
             (1.123, 'a', True, '11/4/2015', '11/4/2015 12:22 PM'),
-            (2, u'👍', False, '11/5/2015', '11/4/2015 12:45 PM'),
-            (2, u'c', False, '11/5/2015', '11/4/2015 12:45 PM'),
+            (2, '👍', False, '11/5/2015', '11/4/2015 12:45 PM'),
+            (2, 'c', False, '11/5/2015', '11/4/2015 12:45 PM'),
             (None, 'b', None, None, None),
         )
 

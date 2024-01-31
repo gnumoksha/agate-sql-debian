@@ -1,3 +1,31 @@
+0.7.2 - Jan 9, 2024
+--------------------
+
+* fix: Remove internal use of transactions (added in 0.6.0), because csvkit's csvsql already starts a transaction.
+
+0.7.1 - Jan 9, 2024
+--------------------
+
+* feat: Add experimental support for Ingres.
+* fix: Restore internal use of transactions instead of savepoints, because not all database engines support savepoints.
+
+0.7.0 - Oct 18, 2023
+--------------------
+
+* feat: Use `Fast Executemany Mode <https://docs.sqlalchemy.org/en/20/dialects/mssql.html#fast-executemany-mode>`_ when using the PyODBC SQL Server dialect.
+* Add Python 3.12 support.
+* Drop support for Python 3.6 (2021-12-23), 3.7 (2023-06-27).
+
+0.6.0 - Sep 26, 2023
+--------------------
+
+* Allow SQLAlchemy 2. Disallow SQLAlchemy < 1.4.
+
+0.5.9 - Jan 28, 2023
+--------------------
+
+* Disallow SQLAlchemy 2.
+
 0.5.8 - September 15, 2021
 --------------------------
 

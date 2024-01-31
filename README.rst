@@ -2,6 +2,10 @@
     :target: https://github.com/wireservice/agate-sql/actions
     :alt: Build status
 
+.. image:: https://coveralls.io/repos/wireservice/agate-sql/badge.svg?branch=master
+    :target: https://coveralls.io/r/wireservice/agate-sql
+    :alt: Coverage status
+
 .. image:: https://img.shields.io/pypi/dm/agate-sql.svg
     :target: https://pypi.python.org/pypi/agate-sql
     :alt: PyPI downloads
@@ -22,7 +26,7 @@ agate-sql adds SQL read/write support to `agate <https://github.com/wireservice/
 
 Important links:
 
-* agate             http://agate.rtfd.org
-* Documentation:    http://agate-sql.rtfd.org
+* agate             https://agate.rtfd.org
+* Documentation:    https://agate-sql.rtfd.org
 * Repository:       https://github.com/wireservice/agate-sql
 * Issues:           https://github.com/wireservice/agate-sql/issues
