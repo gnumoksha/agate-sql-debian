@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """
 This module contains the agatesql extensions to
 :class:`Table <agate.table.Table>`.
@@ -7,9 +5,9 @@ This module contains the agatesql extensions to
 
 import datetime
 import decimal
+from urllib.parse import urlsplit
 
 import agate
-import six
 from sqlalchemy import Column, MetaData, Table, UniqueConstraint, create_engine, dialects
 from sqlalchemy.dialects.mssql import BIT
 from sqlalchemy.dialects.oracle import INTERVAL as ORACLE_INTERVAL
@@ -57,11 +55,15 @@ def get_engine_and_connection(connection_or_string=None):
         engine = create_engine('sqlite:///:memory:')
         connection = engine.connect()
         return None, connection
-    elif isinstance(connection_or_string, Connection):
+    if isinstance(connection_or_string, Connection):
         connection = connection_or_string
         return None, connection
 
-    engine = create_engine(connection_or_string)
+    kwargs = {}
+    if urlsplit(connection_or_string).scheme == 'mssql+pyodbc':
+        kwargs = {'fast_executemany': True}
+
+    engine = create_engine(connection_or_string, **kwargs)
     connection = engine.connect()
     return engine, connection
 
@@ -80,8 +82,8 @@ def from_sql(cls, connection_or_string, table_name):
     """
     engine, connection = get_engine_and_connection(connection_or_string)
 
-    metadata = MetaData(connection)
-    sql_table = Table(table_name, metadata, autoload=True, autoload_with=connection)
+    metadata = MetaData()
+    sql_table = Table(table_name, metadata, autoload_with=connection)
 
     column_names = []
     column_types = []
@@ -100,7 +102,7 @@ def from_sql(cls, connection_or_string, table_name):
             column_types.append(agate.Number())
         elif py_type is bool:
             column_types.append(agate.Boolean())
-        elif issubclass(py_type, six.string_types):
+        elif issubclass(py_type, str):
             column_types.append(agate.Text())
         elif py_type is datetime.date:
             column_types.append(agate.Date())
@@ -111,7 +113,7 @@ def from_sql(cls, connection_or_string, table_name):
         else:
             raise ValueError('Unsupported sqlalchemy column type: %s' % type(sql_column.type))
 
-    s = select([sql_table])
+    s = select(sql_table)
 
     rows = connection.execute(s)
 
@@ -180,7 +182,7 @@ def make_sql_table(table, table_name, dialect=None, db_schema=None, constraints=
     """
     Generates a SQL alchemy table from an agate table.
     """
-    metadata = MetaData(connection)
+    metadata = MetaData()
     sql_table = Table(table_name, metadata, schema=db_schema)
 
     SQL_TYPE_MAP[agate.Boolean] = BOOLEAN_MAP.get(dialect, BOOLEAN)
@@ -194,21 +196,27 @@ def make_sql_table(table, table_name, dialect=None, db_schema=None, constraints=
         sql_column_kwargs = {}
 
         if constraints:
-            if isinstance(column.data_type, agate.Text) and dialect == 'mysql':
+            if isinstance(column.data_type, agate.Text) and dialect in ('ingres', 'mysql'):
                 length = table.aggregate(agate.MaxLength(column_name)) * decimal.Decimal(col_len_multiplier)
-                if length > 21844:
-                    # @see https://dev.mysql.com/doc/refman/5.7/en/string-type-overview.html
+                if (
+                    # https://dev.mysql.com/doc/refman/8.2/en/string-type-syntax.html
+                    dialect == 'mysql' and length > 21844  # 65,535 bytes divided by 3
+                    # https://docs.actian.com/ingres/11.2/index.html#page/SQLRef/Character_Data_Types.htm
+                    or dialect == 'ingres' and length > 10666  # 32,000 bytes divided by 3
+                ):
                     sql_column_type = TEXT
+                # If length is zero, SQLAlchemy may raise "VARCHAR requires a length on dialect mysql".
                 else:
-                    # If length is zero, SQLAlchemy may raise "VARCHAR requires a length on dialect mysql".
                     sql_type_kwargs['length'] = length if length >= min_col_len else min_col_len
 
             # PostgreSQL and SQLite don't have scale default 0.
             # @see https://www.postgresql.org/docs/9.2/static/datatype-numeric.html
             # @see https://www.sqlite.org/datatype3.html
-            if isinstance(column.data_type, agate.Number) and dialect in ('mssql', 'mysql', 'oracle'):
+            if isinstance(column.data_type, agate.Number) and dialect in ('ingres', 'mssql', 'mysql', 'oracle'):
+                # Ingres has precision range 1-39 and default 5, scale default 0.
+                # @see https://docs.actian.com/ingres/11.2/index.html#page/SQLRef/Storage_Formats_of_Data_Types.htm
                 # MySQL has precision range 1-65 and default 10, scale default 0.
-                # @see https://dev.mysql.com/doc/refman/5.7/en/fixed-point-types.html
+                # @see https://dev.mysql.com/doc/refman/8.2/en/fixed-point-types.html
                 # Oracle has precision range 1-38 and default 38, scale default 0.
                 # @see https://docs.oracle.com/cd/B28359_01/server.111/b28318/datatype.htm#CNCPT1832
                 # SQL Server has range 1-38 and default 18, scale default 0.
@@ -217,7 +225,7 @@ def make_sql_table(table, table_name, dialect=None, db_schema=None, constraints=
                 sql_type_kwargs['scale'] = table.aggregate(agate.MaxPrecision(column_name))
 
             # Avoid errors due to NO_ZERO_DATE.
-            # @see http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sqlmode_no_zero_date
+            # @see https://dev.mysql.com/doc/refman/8.2/en/sql-mode.html#sqlmode_no_zero_date
             if not isinstance(column.data_type, agate.DateTime):
                 sql_column_kwargs['nullable'] = table.aggregate(agate.HasNulls(column_name))
 
@@ -255,15 +263,15 @@ def to_sql(self, connection_or_string, table_name, overwrite=False,
         Add prefixes to the insert query.
     :param db_schema:
         Create table in the specified database schema.
-    :param constraints
+    :param constraints:
         Generate constraints such as ``nullable`` for table columns.
-    :param unique_constraint
+    :param unique_constraint:
         The names of the columns to include in a UNIQUE constraint.
-    :param chunk_size
+    :param chunk_size:
         Write rows in batches of this size. If not set, rows will be written at once.
-    :param col_min_len
+    :param col_min_len:
         The minimum length of text columns.
-    :param col_len_multiplier
+    :param col_len_multiplier:
         Multiply the maximum column length by this multiplier to accomodate larger values in later runs.
     """
     engine, connection = get_engine_and_connection(connection_or_string)
@@ -275,9 +283,9 @@ def to_sql(self, connection_or_string, table_name, overwrite=False,
 
     if create:
         if overwrite:
-            sql_table.drop(checkfirst=True)
+            sql_table.drop(bind=connection, checkfirst=True)
 
-        sql_table.create(checkfirst=create_if_not_exists)
+        sql_table.create(bind=connection, checkfirst=create_if_not_exists)
 
     if insert:
         insert = sql_table.insert()
@@ -313,9 +321,9 @@ def to_sql_create_statement(self, table_name, dialect=None, db_schema=None, cons
         The dialect of SQL to use for the table statement.
     :param db_schema:
         Create table in the specified database schema.
-    :param constraints
+    :param constraints:
         Generate constraints such as ``nullable`` for table columns.
-    :param unique_constraint
+    :param unique_constraint:
         The names of the columns to include in a UNIQUE constraint.
     """
     sql_table = make_sql_table(self, table_name, dialect=dialect, db_schema=db_schema, constraints=constraints,
@@ -326,7 +334,7 @@ def to_sql_create_statement(self, table_name, dialect=None, db_schema=None, cons
     else:
         sql_dialect = None
 
-    return six.text_type(CreateTable(sql_table).compile(dialect=sql_dialect)).strip() + ';'
+    return str(CreateTable(sql_table).compile(dialect=sql_dialect)).strip() + ';'
 
 
 def sql_query(self, query, table_name='agate'):
@@ -352,7 +360,7 @@ def sql_query(self, query, table_name='agate'):
 
     for q in queries:
         if q:
-            rows = connection.execute(q)
+            rows = connection.exec_driver_sql(q)
 
     table = agate.Table(list(rows), column_names=rows._metadata.keys)
 
