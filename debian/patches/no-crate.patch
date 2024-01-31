@@ -8,7 +8,7 @@ Subject: no-crate
 
 --- a/tests/test_agatesql.py
 +++ b/tests/test_agatesql.py
-@@ -169,7 +169,7 @@
+@@ -166,7 +166,7 @@
          self.assertEqual(statement.replace('\t', '  '), dedent(expected))
  
      def test_to_sql_create_statement_with_dialects(self):

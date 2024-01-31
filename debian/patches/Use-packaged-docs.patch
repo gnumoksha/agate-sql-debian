@@ -8,12 +8,12 @@ Subject: Use packaged docs
 
 --- a/docs/conf.py
 +++ b/docs/conf.py
-@@ -27,8 +27,14 @@
- autodoc_member_order = 'bysource'
+@@ -40,6 +40,12 @@
+ }
  
  intersphinx_mapping = {
--    'python': ('http://docs.python.org/3.5/', None),
--    'agate': ('http://agate.readthedocs.org/en/latest/', None)
+-    'python': ('https://docs.python.org/3', None),
+-    'agate': ('https://agate.readthedocs.org/en/latest/', None)
 +    'python': (
 +        'http://docs.python.org/3/',
 +        '/usr/share/doc/python3/html/objects.inv',
@@ -23,5 +23,3 @@ Subject: Use packaged docs
 +        '/usr/share/doc/python-agate-doc/html/objects.inv',
 +    ),
  }
- 
- # Add any paths that contain templates here, relative to this directory.
