@@ -4,7 +4,7 @@ Uploaders: Ghislain Antony Vaillant <ghisvail@gmail.com>
 Section: python
 Priority: optional
 Build-Depends: debhelper-compat (= 13),
-               dh-python,
+               dh-sequence-python3,
                python-agate-doc <!nodoc>,
                python3-agate <!nocheck> <!nodoc>,
                python3-all,
