@@ -1,3 +1,11 @@
+python-agate-sql (0.7.3-1) unstable; urgency=medium
+
+  * Team upload.
+  * New upstream version 0.7.3
+  * Rebase patches for new upstream version
+
+ -- Tobias Sette <tobiasette@gmail.com>  Fri, 20 Nov 2026 17:25:00 -0300
+
 python-agate-sql (0.7.2-1) unstable; urgency=medium
 
   * Team upload
