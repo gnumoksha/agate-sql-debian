@@ -3,9 +3,11 @@ Date: Wed, 15 Mar 2017 12:43:39 +0000
 Subject: No privacy breach
 
 ---
- README.rst | 16 ----------------
- 1 file changed, 16 deletions(-)
+ README.rst | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
+diff --git a/README.rst b/README.rst
+index 1d0d733..96e8137 100644
 --- a/README.rst
 +++ b/README.rst
 @@ -1,27 +1,3 @@
